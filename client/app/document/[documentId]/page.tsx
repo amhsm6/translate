@@ -1,8 +1,9 @@
 import React from "react";
-import type Document from "./state";
+import { ContextProvider, Document } from "./context";
 import Header from "./components/Header";
 import SegmentEditor from "./components/SegmentEditor";
 import Sidepanel from "./components/Sidepanel";
+import styles from "./page.module.css";
 
 type Props = {
     params: Promise<{ documentId: number }>
@@ -15,12 +16,12 @@ export default async function Page({ params }: Props) {
     const document: Document = await resp.json();
 
     return (
-        <div>
+        <ContextProvider document={ document }>
             <Header />
-            <div className="flex justify-between mt-3">
+            <div className={ `flex justify-between mt-5 pb-20 ${styles.content}` }>
                 <SegmentEditor />
                 <Sidepanel />
             </div>
-        </div>
+        </ContextProvider>
     );
 }

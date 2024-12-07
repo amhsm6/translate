@@ -9,8 +9,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: React.PropsWithChildren) {
     return (
-        <html lang="en">
-            <body className="m-0 p-0">{ children }</body>
+        <html className="h-full" lang="en">
+            <body className="m-0 p-0 h-full">{ children }</body>
         </html>
     );
 }

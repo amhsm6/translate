@@ -18,14 +18,9 @@ export type Segment = {
 };
 
 type State = {
-    segments: Segment[],
+    document: Document,
     currentSegmentId: string | null
-};
-
-const initial: State = {
-    segments: [],
-    currentSegmentId: null
-};
+} | null;
 
 type Action = { type: 'add' };
 
@@ -33,12 +28,16 @@ const reducer: React.Reducer<State, Action> = (state, action) => {
     return state;
 };
 
-export default reducer;
+const context = createContext<{ state: State, dispatch: React.ActionDispatch<[Action]> }>({ state: null, dispatch: () => {} });
 
-export const context = createContext<{ state: State, disptach: React.ActionDispatch<[Action]> }>({ state: initial, disptach: () => {} });
+export default context;
 
-export function ContextProvider({ children }: React.PropsWithChildren) {
-    const [state, dispatch] = useReducer(reducer, initial);
+type Props = {
+    document: Document
+} & React.PropsWithChildren;
+
+export function ContextProvider({ document, children }: Props) {
+    const [state, dispatch] = useReducer(reducer, { document, currentSegmentId: null });
 
     return (
         <context.Provider value={ { state, dispatch } }>
