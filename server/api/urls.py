@@ -1,7 +1,8 @@
 from django.urls import path
 
-from .views import DocumentView
+from .views import *
 
 urlpatterns = [
-    path('document/<int:pk>', DocumentView.as_view())
+    path('documents/', DocumentListView.as_view()),
+    path('document/<str:pk>/', DocumentView.as_view())
 ]

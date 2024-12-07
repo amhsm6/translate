@@ -5,30 +5,23 @@ from .models import *
 class TargetSegmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = TargetSegment
-        fields = ['pk', 'text']
+        fields = ['id', 'text']
 
 class SourceSegmentSerializer(serializers.ModelSerializer):
-    source = serializers.SerializerMethodField()
-    target = serializers.SerializerMethodField()
+    target = TargetSegmentSerializer()
 
     class Meta:
         model = SourceSegment
-        fields = ['pk', 'source', 'target']
-
-    def get_source(self, obj):
-        return obj.text
-
-    def get_target(self, obj):
-        target = TargetSegmentSerializer(obj.targetsegment)
-        return target.data
+        fields = ['id', 'source', 'target']
 
 class DocumentSerializer(serializers.ModelSerializer):
-    segments = serializers.SerializerMethodField()
+    segments = SourceSegmentSerializer(many=True)
 
     class Meta:
         model = Document
-        fields = ['pk', 'title', 'segments']
-    
-    def get_segments(self, obj):
-        segments = SourceSegmentSerializer(obj.sourcesegment_set, many=True)
-        return segments.data
+        fields = ['id', 'title', 'segments']
+
+class DocumentListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Document
+        fields = ['id', 'title']

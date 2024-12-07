@@ -1,12 +1,16 @@
+import uuid
 from django.db import models
 
 class Document(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField()
 
 class SourceSegment(models.Model):
-    document = models.ForeignKey(Document, on_delete=models.CASCADE)
-    text = models.TextField()
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    document = models.ForeignKey(Document, to_field='id', related_name='segments', on_delete=models.CASCADE)
+    source = models.TextField()
 
 class TargetSegment(models.Model):
-    source = models.OneToOneField(SourceSegment, on_delete=models.CASCADE)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    source = models.OneToOneField(SourceSegment, to_field='id', related_name='target', on_delete=models.CASCADE)
     text = models.TextField()
