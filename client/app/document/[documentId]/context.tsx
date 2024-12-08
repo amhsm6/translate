@@ -14,7 +14,7 @@ export type Segment = {
     target: {
         id: string,
         text: string
-    }
+    } | null
 };
 
 type State = {

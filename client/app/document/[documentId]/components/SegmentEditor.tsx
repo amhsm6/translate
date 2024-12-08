@@ -9,8 +9,8 @@ export default function SegmentEditor() {
 
     return (
         <div className="w-full h-full px-7 mr-6">
-            <div className="flex justify-between mb-3">
-                <div className="w-1/3 text-center">
+            <div className="flex mb-3">
+                <div className="w-1/3 mr-24 text-center">
                     <strong className="text-lg">Source</strong>
                 </div>
                 <div className="w-1/3 text-center">
