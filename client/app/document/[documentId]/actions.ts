@@ -7,7 +7,7 @@ export async function updateTarget(sourceId: string, targetId: string | null, ta
             process.env.NODE_ENV === "production" ? `${process.env.URL}/api/target/${targetId}/` : `${process.env.API_URL}/api/target/${targetId}/`,
             {
                 method: "PUT",
-                body: JSON.stringify(targetText),
+                body: JSON.stringify({ "text": targetText }),
                 headers: {
                     "Content-Type": "application/json"
                 }
@@ -18,7 +18,7 @@ export async function updateTarget(sourceId: string, targetId: string | null, ta
             process.env.NODE_ENV === "production" ? `${process.env.URL}/api/source/${sourceId}/translate/` : `${process.env.API_URL}/api/source/${sourceId}/translate/`,
             {
                 method: "POST",
-                body: JSON.stringify(targetText),
+                body: JSON.stringify({ "text": targetText }),
                 headers: {
                     "Content-Type": "application/json"
                 }
@@ -28,7 +28,7 @@ export async function updateTarget(sourceId: string, targetId: string | null, ta
 
     if (resp.ok) { return; }
 
-    console.log(await resp.text);
+    console.log(await resp.text());
 
     // TODO: return and process error
 }

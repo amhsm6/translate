@@ -29,9 +29,8 @@ export default function Segment({ segment }: Props) {
     const save = () => {
         setSaving(true);
 
-        updateTarget(segment.id, segment.target?.id || null, targetText);
-
-        setTimeout(() => setSaving(false), 1000);
+        updateTarget(segment.id, segment.target?.id || null, targetText)
+            .then(() => setSaving(false));
     };
 
     return (
