@@ -12,7 +12,7 @@ type Props = {
 export default async function Page({ params }: Props) {
     const { documentId } = await params;
 
-    const resp = await fetch(process.env.NODE_ENV === "production" ? `${process.env.URL}/api/document/${documentId}` : `${process.env.API_URL}/api/document/${documentId}`);
+    const resp = await fetch(process.env.NODE_ENV === "production" ? `${process.env.URL}/api/document/${documentId}/` : `${process.env.API_URL}/api/document/${documentId}/`);
     const document: Document = await resp.json();
 
     return (

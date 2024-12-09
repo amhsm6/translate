@@ -64,3 +64,11 @@
     @apply bg-background text-foreground;
   }
 }
+
+.scroll-left {
+  direction: rtl;
+}
+
+.scroll-left > div {
+  direction: ltr
+}

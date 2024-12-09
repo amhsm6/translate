@@ -15,3 +15,7 @@ class DocumentView(generics.RetrieveAPIView):
 class DocumentListView(generics.ListAPIView):
     queryset = Document.objects.all()
     serializer_class = DocumentListSerializer
+
+class TargetSegmentUpdateView(generics.UpdateAPIView):
+    queryset = TargetSegment.objects.all()
+    serializer_class = TargetSegmentSerializer
