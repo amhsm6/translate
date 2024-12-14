@@ -10,11 +10,16 @@ export type Document = {
 
 export type Segment = {
     id: string,
+    index: number,
     source: string,
-    target: {
-        id: string,
-        text: string
-    } | null
+    lang: string,
+    translations: Translation[]
+};
+
+export type Translation = {
+    id: string,
+    target: string,
+    lang: string
 };
 
 type State = {

@@ -6,13 +6,13 @@ import Sidepanel from "./components/Sidepanel";
 import styles from "./page.module.css";
 
 type Props = {
-    params: Promise<{ documentId: number }>
+    params: Promise<{ documentId: number, lang: string }>
 };
 
 export default async function Page({ params }: Props) {
-    const { documentId } = await params;
+    const { documentId, lang } = await params;
 
-    const resp = await fetch(process.env.NODE_ENV === "production" ? `${process.env.URL}/api/document/${documentId}/` : `${process.env.API_URL}/api/document/${documentId}/`);
+    const resp = await fetch(process.env.NODE_ENV === "production" ? `${process.env.URL}/api/document/${documentId}/${lang}` : `${process.env.API_URL}/api/document/${documentId}/${lang}`);
     const document: Document = await resp.json();
 
     return (
