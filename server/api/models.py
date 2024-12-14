@@ -5,12 +5,15 @@ class Document(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField()
 
-class SourceSegment(models.Model):
+class Segment(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    document = models.ForeignKey(Document, to_field='id', related_name='segments', on_delete=models.CASCADE)
+    document = models.ForeignKey(Document, related_name='segments', on_delete=models.CASCADE)
+    index = models.IntegerField(unique=True)
     source = models.TextField()
+    lang = models.CharField()
 
-class TargetSegment(models.Model):
+class Translation(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    source = models.OneToOneField(SourceSegment, to_field='id', related_name='target', on_delete=models.CASCADE)
-    text = models.TextField()
+    segment = models.ForeignKey(Segment, related_name='translations', on_delete=models.CASCADE)
+    target = models.TextField()
+    lang = models.CharField()

@@ -5,6 +5,5 @@ from .views import *
 urlpatterns = [
     path('documents/', DocumentListView.as_view()),
     path('document/<str:pk>/', DocumentView.as_view()),
-    path('source/<str:pk>/translate/', SourceSegmentTranslateView.as_view()),
-    path('target/<str:pk>/', TargetSegmentUpdateView.as_view())
+    path('segment/<str:pk>/translate/<str:lang>/', TranslationView.as_view())
 ]
