@@ -23,7 +23,11 @@ class SegmentSerializer(serializers.ModelSerializer):
         fields = ['id', 'index', 'source', 'lang', 'translations']
 
     def get_translations(self, segment):
-        qs = segment.translations.filter(lang=self.context['lang'])
+        if 'lang' in self.context:
+            qs = segment.translations.filter(lang=self.context['lang'])
+        else:
+            qs = segment.translations.all()
+
         return TranslationSerializer(qs, many=True).data
 
     # TODO: add validators for uniqueness of index and consistency of lang within the document
