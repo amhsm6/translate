@@ -16,11 +16,15 @@ class TranslationSerializer(serializers.ModelSerializer):
         return value
 
 class SegmentSerializer(serializers.ModelSerializer):
-    translations = TranslationSerializer(many=True)
+    translations = serializers.SerializerMethodField()
 
     class Meta:
         model = Segment
         fields = ['id', 'index', 'source', 'lang', 'translations']
+
+    def get_translations(self, segment):
+        qs = segment.translations.filter(lang=self.context['lang'])
+        return TranslationSerializer(qs, many=True).data
 
     # TODO: add validators for uniqueness of index and consistency of lang within the document
 
@@ -32,9 +36,8 @@ class DocumentSerializer(serializers.ModelSerializer):
         fields = ['id', 'title', 'segments']
 
     def get_segments(self, obj):
-        qs = obj.segments.all().order_by('index')
-        print('ser', list(map(lambda seg: seg.translations.all(), qs)))
-        return SegmentSerializer(qs, many=True).data
+        qs = obj.segments.order_by('index')
+        return SegmentSerializer(qs, many=True, context=self.context).data
 
 class DocumentListSerializer(serializers.ModelSerializer):
     class Meta:

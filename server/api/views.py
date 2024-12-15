@@ -1,6 +1,4 @@
-from django.http import Http404
 from django.shortcuts import get_object_or_404
-from django.db.models import Prefetch
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -18,17 +16,10 @@ class DocumentListView(generics.ListAPIView):
 
 class DocumentView(APIView):
     def get(self, request, pk, lang):
-        try:
-            document = Document.objects.all().prefetch_related(
-                Prefetch('segments__translations', Translation.objects.filter(lang=lang))
-            ).get(pk=pk)
-            print('view', list(map(lambda seg: seg.translations.all(), document.segments.all())))
+        document = get_object_or_404(Document, pk=pk)
 
-            serializer = DocumentSerializer(document)
-            return Response(serializer.data)
-
-        except Document.DoesNotExist:
-            raise Http404
+        serializer = DocumentSerializer(document, context={'lang': lang})
+        return Response(serializer.data)
 
 class TranslationView(APIView):
     def post(self, request, pk, lang):
