@@ -1,13 +1,15 @@
 "use server";
 
-export async function updateTarget(sourceId: string, targetId: string | null, targetText: string) {
+import { Translation } from "./context";
+
+export async function updateTarget(segmentId: string, translationLang: string, targetId: string | null, targetText: string): Promise<Translation> {
     let resp: Response;
     if (targetId) {
         resp = await fetch(
-            process.env.NODE_ENV === "production" ? `${process.env.URL}/api/target/${targetId}/` : `${process.env.API_URL}/api/target/${targetId}/`,
+            process.env.NODE_ENV === "production" ? `${process.env.URL}/api/translation/${targetId}/` : `${process.env.API_URL}/api/translation/${targetId}/`,
             {
                 method: "PUT",
-                body: JSON.stringify({ "text": targetText }),
+                body: JSON.stringify({ "target": targetText, "lang": translationLang }),
                 headers: {
                     "Content-Type": "application/json"
                 }
@@ -15,10 +17,10 @@ export async function updateTarget(sourceId: string, targetId: string | null, ta
         );
     } else {
         resp = await fetch(
-            process.env.NODE_ENV === "production" ? `${process.env.URL}/api/source/${sourceId}/translate/` : `${process.env.API_URL}/api/source/${sourceId}/translate/`,
+            process.env.NODE_ENV === "production" ? `${process.env.URL}/api/segment/${segmentId}/translate/${translationLang}/` : `${process.env.API_URL}/api/segment/${segmentId}/translate/${translationLang}/`,
             {
                 method: "POST",
-                body: JSON.stringify({ "text": targetText }),
+                body: JSON.stringify({ "target": targetText }),
                 headers: {
                     "Content-Type": "application/json"
                 }
@@ -26,9 +28,9 @@ export async function updateTarget(sourceId: string, targetId: string | null, ta
         );
     }
 
-    if (resp.ok) { return; }
+    if (!resp.ok) {
+        throw new Error(await resp.text());
+    } 
 
-    console.log(await resp.text());
-
-    // TODO: return and process error
+    return await resp.json();
 }

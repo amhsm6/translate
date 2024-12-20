@@ -19,7 +19,7 @@ export default function SegmentEditor() {
                 </div>
             </div>
             </div>
-            <div className="scroll-left w-full h-full flex justify-end overflow-scroll">
+            <div className="scroll-left w-full h-full flex justify-end overflow-y-scroll">
                 <div className="w-11/12">
                     { state?.document.segments.map(seg => <Segment segment={ seg } key={ seg.id } />) }
                 </div>

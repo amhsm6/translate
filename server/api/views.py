@@ -29,4 +29,8 @@ class TranslationView(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save(segment=segment)
 
-        return Response()
+        return Response(serializer.data)
+
+class TranslationEditView(generics.UpdateAPIView):
+    queryset = Translation.objects.all()
+    serializer_class = TranslationEditSerializer

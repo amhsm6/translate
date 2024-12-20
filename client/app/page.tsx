@@ -2,6 +2,6 @@ import React from "react";
 
 export default function Page() {
     return (
-        <h1>Alxn</h1>
+        <h1>Index</h1>
     );
 }

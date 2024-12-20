@@ -24,6 +24,7 @@ export type Translation = {
 
 type State = {
     document: Document,
+    translationLang: string,
     currentSegmentId: string | null
 } | null;
 
@@ -38,11 +39,12 @@ const context = createContext<{ state: State, dispatch: React.ActionDispatch<[Ac
 export default context;
 
 type Props = {
-    document: Document
+    document: Document,
+    translationLang: string
 } & React.PropsWithChildren;
 
-export function ContextProvider({ document, children }: Props) {
-    const [state, dispatch] = useReducer(reducer, { document, currentSegmentId: null });
+export function ContextProvider({ document, translationLang, children }: Props) {
+    const [state, dispatch] = useReducer(reducer, { document, translationLang, currentSegmentId: null });
 
     return (
         <context.Provider value={ { state, dispatch } }>

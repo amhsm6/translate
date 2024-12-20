@@ -13,10 +13,14 @@ export default async function Page({ params }: Props) {
     const { documentId, lang } = await params;
 
     const resp = await fetch(process.env.NODE_ENV === "production" ? `${process.env.URL}/api/document/${documentId}/${lang}` : `${process.env.API_URL}/api/document/${documentId}/${lang}`);
+    if (!resp.ok) {
+        throw new Error(await resp.text());
+    }
+
     const document: Document = await resp.json();
 
     return (
-        <ContextProvider document={ document }>
+        <ContextProvider document={ document } translationLang={ lang }>
             <Header />
             <div className={ `flex justify-between mt-5 pb-20 ${styles.content}` }>
                 <SegmentEditor />
