@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import generics
-from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from .models import *
 from .serializers import *
@@ -33,4 +33,4 @@ class TranslationView(APIView):
 
 class TranslationEditView(generics.UpdateAPIView):
     queryset = Translation.objects.all()
-    serializer_class = TranslationEditSerializer
+    serializer_class = TranslationSerializer

@@ -47,8 +47,3 @@ class DocumentListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Document
         fields = ['id', 'title']
-
-class TranslationEditSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Translation
-        fields = ['id', 'target', 'lang']

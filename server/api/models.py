@@ -1,5 +1,5 @@
-import uuid
 from django.db import models
+import uuid
 
 # FIXME: make index and lang fields unique on the model level
 
