@@ -13,7 +13,7 @@ export default function Segment({ segment }: Props) {
         throw new Error("It is possible to edit translation for only one language at a time");
     }
     const [translation, setTranslation] = useState<Translation | null>(segment.translations.length == 0 ? null : segment.translations[0]);
-    const [targetText, setTargetText] = useState<string>(translation?.target || "");
+    const [targetText, setTargetText] = useState(translation?.target || "");
 
     const { state } = useContext(context);
     const translationLang = state?.translationLang;
