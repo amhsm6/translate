@@ -1,11 +1,13 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 import uuid
 
-# FIXME: make index and lang fields unique on the model level
+User = get_user_model()
 
 class Document(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField()
+    assigned_to = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 
 class Segment(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -14,8 +16,14 @@ class Segment(models.Model):
     source = models.TextField()
     lang = models.CharField()
 
+    class Meta:
+        unique_together = ['document', 'index']
+
 class Translation(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     segment = models.ForeignKey(Segment, related_name='translations', on_delete=models.CASCADE)
     target = models.TextField()
     lang = models.CharField()
+
+    class Meta:
+        unique_together = ['segment', 'lang']

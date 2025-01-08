@@ -30,8 +30,6 @@ class SegmentSerializer(serializers.ModelSerializer):
 
         return TranslationSerializer(qs, many=True).data
 
-    # TODO: add validators for uniqueness of index and consistency of lang within the document
-
 class DocumentSerializer(serializers.ModelSerializer):
     segments = serializers.SerializerMethodField()
 
