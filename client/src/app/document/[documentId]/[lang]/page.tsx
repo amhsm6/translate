@@ -1,5 +1,6 @@
 import React from "react";
-import { ContextProvider, Document } from "./context";
+import { fetchapi } from "@/actions";
+import { ContextProvider } from "./context";
 import Header from "./components/Header";
 import SegmentEditor from "./components/SegmentEditor";
 import Sidepanel from "./components/Sidepanel";
@@ -11,13 +12,7 @@ type Props = {
 
 export default async function Page({ params }: Props) {
     const { documentId, lang } = await params;
-
-    const resp = await fetch(process.env.NODE_ENV === "production" ? `${process.env.URL}/api/document/${documentId}/${lang}` : `${process.env.API_URL}/api/document/${documentId}/${lang}`);
-    if (!resp.ok) {
-        throw new Error(await resp.text());
-    }
-
-    const document: Document = await resp.json();
+    const document = await fetchapi(`/api/document/${documentId}/${lang}`, "GET");
 
     return (
         <ContextProvider document={ document } translationLang={ lang }>

@@ -43,3 +43,11 @@ class TranslationView(APIView):
 class TranslationEditView(generics.UpdateAPIView):
     queryset = Translation.objects.all()
     serializer_class = TranslationSerializer
+
+    def update(self, request, *args, **kwargs):
+        translation = self.get_object()
+
+        if translation.segment.document.assigned_to != request.user:
+            raise PermissionDenied
+
+        return super().update(request, *args, **kwargs)
