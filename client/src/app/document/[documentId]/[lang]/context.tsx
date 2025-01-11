@@ -26,7 +26,7 @@ type State = {
     document: Document,
     translationLang: string,
     currentSegmentId: string | null
-} | null;
+};
 
 type Action = { type: 'add' };
 
@@ -34,7 +34,12 @@ const reducer: React.Reducer<State, Action> = (state, action) => {
     return state;
 };
 
-const context = createContext<{ state: State, dispatch: React.ActionDispatch<[Action]> }>({ state: null, dispatch: () => {} });
+type Context = {
+    state: State,
+    dispatch: React.ActionDispatch<[Action]>
+} | null;
+
+const context = createContext<Context>(null);
 
 export default context;
 
@@ -47,7 +52,7 @@ export function ContextProvider({ document, translationLang, children }: Props) 
     const [state, dispatch] = useReducer(reducer, { document, translationLang, currentSegmentId: null });
 
     return (
-        <context.Provider value={ { state, dispatch } }>
+        <context.Provider value={{ state, dispatch }}>
             { children }
         </context.Provider>
     );

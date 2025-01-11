@@ -34,7 +34,7 @@ class TranslationView(APIView):
         if segment.document.assigned_to != request.user:
             raise PermissionDenied
 
-        serializer = TranslationSerializer(data={**request.data, 'lang': lang}, context={'segment': segment})
+        serializer = TranslationSerializer(data={ **request.data, 'lang': lang }, context={ 'segment': segment })
         serializer.is_valid(raise_exception=True)
         serializer.save(segment=segment)
 

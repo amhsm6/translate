@@ -1,25 +1,20 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 import { updateTarget } from "../actions";
-import context, { Segment as DocumentSegment, Translation } from "../context";
+import context, { Segment, Translation } from "../context";
 import { Button } from "@/components/ui/button";
 import { HashLoader } from "react-spinners";
 
 type Props = {
-    segment: DocumentSegment
+    segment: Segment
 };
 
-export default function Segment({ segment }: Props) {
-    if (segment.translations.length > 1) {
-        throw new Error("It is possible to edit translation for only one language at a time");
-    }
-    const [translation, setTranslation] = useState<Translation | null>(segment.translations.length == 0 ? null : segment.translations[0]);
-    const [targetText, setTargetText] = useState(translation?.target || "");
+export default function SegmentComponent({ segment }: Props) {
+    const ctx = useContext(context);
+    if (!ctx) { throw new Error("Context is undefined"); }
+    const { state } = ctx;
 
-    const { state } = useContext(context);
-    const translationLang = state?.translationLang;
-    if (!translationLang) {
-        throw new Error("Translation Language is undefined");
-    }
+    const [translation, setTranslation] = useState<Translation | null>(segment.translations.length == 0 ? null : segment.translations[0]);
+    const [targetText, setTargetText] = useState(translation?.target ?? "");
 
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState<Error | null>(null);
@@ -44,7 +39,7 @@ export default function Segment({ segment }: Props) {
     const save = () => {
         setSaving(true);
 
-        updateTarget(segment.id, translationLang, translation?.id || null, targetText)
+        updateTarget(segment.id, state.translationLang, translation?.id ?? null, targetText)
             .then(trans => {
                 setTranslation(trans);
                 setSaving(false);
