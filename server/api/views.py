@@ -7,31 +7,31 @@ from rest_framework.views import APIView
 from .models import *
 from .serializers import *
 
-class DocumentListView(generics.ListAPIView):
-    queryset = Document.objects.all()
-    serializer_class = DocumentListSerializer
+class TaskListView(generics.ListAPIView):
+    queryset = Task.objects.all()
+    serializer_class = TaskListSerializer
 
     def get_queryset(self):
         qs = super().get_queryset()
         return qs.filter(assigned_to=self.request.user)
 
-class DocumentView(generics.RetrieveAPIView):
-    queryset = Document.objects.all()
-    serializer_class = DocumentSerializer
+class TaskView(generics.RetrieveAPIView):
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
 
-    def get_serializer_context(self):
-        context = super().get_serializer_context()
+    def retrieve(self, request, *args, **kwargs):
+        task = self.get_object()
 
-        lang = self.kwargs.pop('lang')
-        context['lang'] = lang
+        if task.assigned_to != request.user:
+            raise PermissionDenied
 
-        return context
+        return super().retrieve(request, *args, **kwargs)
 
 class TranslationView(APIView):
     def post(self, request, pk, lang):
         segment = get_object_or_404(Segment, pk=pk)
 
-        if segment.document.assigned_to != request.user:
+        if not segment.document.tasks.filter(assigned_to=request.user, source_lang=segment.lang, target_lang=lang).exists():
             raise PermissionDenied
 
         serializer = TranslationSerializer(data={ **request.data, 'lang': lang }, context={ 'segment': segment })
@@ -47,7 +47,7 @@ class TranslationEditView(generics.UpdateAPIView):
     def update(self, request, *args, **kwargs):
         translation = self.get_object()
 
-        if translation.segment.document.assigned_to != request.user:
+        if not translation.segment.document.tasks.filter(assigned_to=request.user, source_lang=translation.segment.lang, target_lang=translation.lang).exists():
             raise PermissionDenied
 
         return super().update(request, *args, **kwargs)

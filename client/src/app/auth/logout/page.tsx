@@ -1,9 +1,12 @@
+"use client";
+
 import React from "react";
+import Logout from "@/components/Logout";
 
-export default function Page(props: any) {
-    console.log(props);
-
+export default function Page() {
     return (
-        <h1>Logout</h1>
+        <div className="w-full h-full flex justify-center items-center">
+            <Logout />
+        </div>
     );
 }

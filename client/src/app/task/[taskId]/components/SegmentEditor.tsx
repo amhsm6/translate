@@ -23,7 +23,7 @@ export default function SegmentEditor() {
             </div>
             <div className="scroll-left w-full h-full flex justify-end overflow-y-scroll">
                 <div className="w-11/12">
-                    { state.document.segments.map(seg => <SegmentComponent segment={ seg } key={ seg.id } />) }
+                    { state.task.document.segments.map(seg => <SegmentComponent segment={ seg } key={ seg.id } />) }
                 </div>
             </div>
         </div>

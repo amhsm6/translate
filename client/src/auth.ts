@@ -53,7 +53,7 @@ export const authOptions: AuthOptions = {
                     throw new Error("Invalid token");
                 }
 
-                return { ...data, exp: payload.exp };
+                return { ...data, name: credentials?.username, exp: payload.exp };
             },
         }),
         CredentialsProvider({
@@ -82,7 +82,7 @@ export const authOptions: AuthOptions = {
                     throw new Error("Invalid token");
                 }
 
-                return { ...data, exp: payload.exp };
+                return { ...data, name: credentials?.username, exp: payload.exp };
             },
         })
     ],

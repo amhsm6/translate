@@ -41,7 +41,23 @@ class DocumentSerializer(serializers.ModelSerializer):
         qs = obj.segments.order_by('index')
         return SegmentSerializer(qs, many=True, context=self.context).data
 
-class DocumentListSerializer(serializers.ModelSerializer):
+class TaskSerializer(serializers.ModelSerializer):
+    document = serializers.SerializerMethodField()
+
     class Meta:
-        model = Document
-        fields = ['id', 'title']
+        model = Task
+        fields = ['id', 'source_lang', 'target_lang', 'document']
+
+    def get_document(self, obj):
+        self.context['lang'] = obj.target_lang
+        return DocumentSerializer(obj.document, context=self.context).data
+
+class TaskListSerializer(serializers.ModelSerializer):
+    title = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Task
+        fields = ['id', 'title', 'source_lang', 'target_lang']
+
+    def get_title(self, obj):
+        return obj.document.title

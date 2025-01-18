@@ -17,7 +17,7 @@ export async function fetchapi(url: string, method: string, body?: any): Promise
         init.body = JSON.stringify(body);
     }
 
-    const resp = await fetch(`${process.env.API_URL}${url}`, init);
+    const resp = await fetch(`${process.env.API_URL}${url}/`, init);
     const data = await resp.json();
 
     if (!resp.ok) {

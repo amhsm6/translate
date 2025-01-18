@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 import { updateTarget } from "../actions";
-import context, { Segment, Translation } from "../context";
+import context from "../context";
+import type { Segment, Translation } from "@/types";
 import { Button } from "@/components/ui/button";
 import { HashLoader } from "react-spinners";
 
@@ -10,17 +11,19 @@ type Props = {
 
 export default function SegmentComponent({ segment }: Props) {
     const ctx = useContext(context);
-    if (!ctx) { throw new Error("Context is undefined"); }
-    const { state } = ctx;
 
     const [translation, setTranslation] = useState<Translation | null>(segment.translations.length == 0 ? null : segment.translations[0]);
     const [targetText, setTargetText] = useState(translation?.target ?? "");
 
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState<Error | null>(null);
-    if (error) { throw error; }
 
     const ref = useRef<HTMLTextAreaElement>(null);
+
+    if (!ctx) { throw new Error("Context is undefined"); }
+    const { state } = ctx;
+
+    if (error) { throw error; }
 
     // FIXME: a bit awkward but works
     useEffect(() => {
@@ -39,7 +42,7 @@ export default function SegmentComponent({ segment }: Props) {
     const save = () => {
         setSaving(true);
 
-        updateTarget(segment.id, state.translationLang, translation?.id ?? null, targetText)
+        updateTarget(segment.id, state.task.target_lang, translation?.id ?? null, targetText)
             .then(trans => {
                 setTranslation(trans);
                 setSaving(false);

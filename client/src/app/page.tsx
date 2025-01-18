@@ -1,11 +1,16 @@
 import React from "react";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/auth";
+import { fetchapi } from "@/actions";
+import Header from "@/components/Header";
+import type { Task } from "@/types";
 
 export default async function Page() {
-    const session = await getServerSession(authOptions);
-    console.log(session);
+    const tasks: Task[] = await fetchapi("/api/tasks", "GET");
+    console.log(tasks)
+
     return (
-        <h1>Index</h1>
+        <div>
+            <Header type="index" tasks={ tasks.length } />
+            <h1>Index</h1>
+        </div>
     );
 }

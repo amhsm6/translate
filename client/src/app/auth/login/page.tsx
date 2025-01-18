@@ -27,13 +27,13 @@ export default function Page(props: Props) {
 
     const [error, setError] = useState<string | null>(null);
 
-    const { status } = useSession();
-    if (status === "authenticated") { redirect(callbackUrl); }
-
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: { username: "", password: "" }
     });
+
+    const { status } = useSession();
+    if (status === "authenticated") { redirect(callbackUrl); }
  
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
