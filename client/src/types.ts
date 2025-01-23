@@ -1,6 +1,5 @@
 export type Task = {
     id: string,
-    title?: string,
     source_lang: string,
     target_lang: string,
     document: Document

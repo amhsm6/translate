@@ -14,10 +14,11 @@ export default async function Header(props: Props) {
         <div className="w-full h-12 border-b-2 border-black flex items-center justify-between px-6 pb-2">
             <div className="flex items-center">
                 <strong className="text-2xl mr-8"><Link href="/">Translate</Link></strong>
-                { props.type === "index"
-                ? <span className="text-xl">{ `${props.tasks} tasks` }</span>
-                : <span className="text-xl mr-5">{ props.title }</span>
-                }
+                { props.type === "index" ? (
+                    <span className="text-xl">{ `${props.tasks} tasks` }</span>
+                ) : (
+                    <span className="text-xl mr-5">{ props.title }</span>
+                ) }
             </div>
             <div className="flex items-center">
                 <span className="text-lg mr-6">{ session?.user?.name }</span>
