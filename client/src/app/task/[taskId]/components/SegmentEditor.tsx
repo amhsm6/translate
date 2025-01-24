@@ -13,7 +13,7 @@ export default function SegmentEditor() {
         <div className="w-full h-full px-5">
             <div className="w-11/12 ml-5 mb-3 flex justify-center">
             <div className="w-11/12 flex">
-                <div className="w-1/3 mr-24 text-center">
+                <div className="w-1/3 mr-32 text-center">
                     <strong className="text-lg">Source</strong>
                 </div>
                 <div className="w-1/3 text-center">

@@ -21,7 +21,7 @@ export default function SegmentComponent({ segment }: Props) {
     const ref = useRef<HTMLTextAreaElement>(null);
 
     if (!ctx) { throw new Error("Context is undefined"); }
-    const { state } = ctx;
+    const { state, dispatch } = ctx;
 
     if (error) { throw error; }
 
@@ -39,6 +39,17 @@ export default function SegmentComponent({ segment }: Props) {
         ref.current.rows = rows;
     }, [targetText]);
 
+    useEffect(() => {
+        const focusout = () => dispatch({ type: "deselect" });
+
+        ref.current?.addEventListener("focusout", focusout)
+        return () => ref.current?.removeEventListener("focusout", focusout);
+    }, []);
+
+    useEffect(() => {
+        state.currentSegmentId === segment.id && ref.current?.focus();
+    }, [state.currentSegmentId]);
+
     const save = () => {
         setSaving(true);
 
@@ -46,14 +57,22 @@ export default function SegmentComponent({ segment }: Props) {
             .then(trans => {
                 setTranslation(trans);
                 setSaving(false);
+                dispatch({ type: "select-next", index: segment.index });
             })
             .catch(e => setError(e));
     };
 
     return (
-        <div className="w-full ml-5 py-3 border-b-2 border-b-gray-300 flex justify-center">
-            <div className="w-11/12 flex">
-                <div className="w-1/3 min-h-20 mr-24 break-words border-2" style={{ userSelect: "none" }}>
+        <div
+            className={ `w-full ml-3 py-3 border-b-2 border-b-gray-300 flex justify-center transition-all ${state.currentSegmentId === segment.id ? "bg-gray-300" : "hover:bg-gray-100"}` }
+            onClick={ () => dispatch({ type: "select", id: segment.id }) }
+        >
+            <div className="flex" style={{ width: "97%" }}>
+                <div className="min-h-20 mr-6 flex justify-center items-center">
+                    <span className="font-bold">{ segment.index }</span>
+                </div>
+
+                <div className="w-1/3 min-h-20 mr-32 break-words border-2" style={{ userSelect: "none" }}>
                     { segment.source }
                 </div>
 

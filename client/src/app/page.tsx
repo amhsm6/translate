@@ -9,7 +9,7 @@ export default async function Page() {
     return (
         <div className="flex flex-col items-center">
             <Header type="index" tasks={ tasks.length } />
-            <div className="w-full mt-4 px-3">
+            <div className="w-11/12 mt-4 px-5">
                 <TaskTable tasks={ tasks } />
             </div>
         </div>

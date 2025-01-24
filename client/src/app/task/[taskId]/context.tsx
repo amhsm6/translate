@@ -8,10 +8,31 @@ type State = {
     currentSegmentId: string | null
 };
 
-type Action = { type: "add" };
+type Action = { type: "select", id: string }
+            | { type: "select-next", index: number }
+            | { type: "deselect" };
 
 const reducer: React.Reducer<State, Action> = (state, action) => {
-    return state;
+    switch (action.type) {
+    case "select":
+        return {
+            ...state,
+            currentSegmentId: action.id
+        };
+
+    case "select-next":
+        const newIndex = action.index < state.task.document.segments.length ? action.index + 1 : action.index;
+        return {
+            ...state,
+            currentSegmentId: state.task.document.segments[newIndex - 1].id
+        };
+
+    case "deselect":
+        return {
+            ...state,
+            currentSegmentId: null
+        };
+    }
 };
 
 type Context = {
